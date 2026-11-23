@@ -1,4 +1,4 @@
-import config from '@payload-config'
+import config from '@/payload.config'
 import '@payloadcms/next/css'
 import { RootLayout, handleServerFunctions } from '@payloadcms/next/layouts'
 import React from 'react'

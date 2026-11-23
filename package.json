@@ -1,0 +1,35 @@
+{
+  "name": "meocung-cms",
+  "version": "1.0.0",
+  "description": "PayloadCMS 3.0 Official Headless Engine for Meo Cung",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "lint": "next lint",
+    "generate:types": "payload generate:types"
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "3.19.0",
+    "@payloadcms/next": "3.19.0",
+    "@payloadcms/richtext-lexical": "3.19.0",
+    "@payloadcms/ui": "3.19.0",
+    "cross-env": "^7.0.3",
+    "graphql": "^16.8.1",
+    "next": "15.1.6",
+    "payload": "3.19.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0"
+  }
+}

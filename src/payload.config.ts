@@ -109,10 +109,13 @@ export default buildConfig({
         {
           name: 'coverImage',
           type: 'text',
-          label: 'URL Ảnh bìa (Dán link ảnh hoặc chọn từ Thư viện Media)',
+          label: 'Ảnh bìa',
           defaultValue: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&auto=format&fit=crop&q=80',
           admin: {
-            description: 'Ảnh xem trước sẽ hiển thị trực tiếp ở danh sách bài viết và ngoài trang chủ.',
+            components: {
+              Cell: '@/components/ImageCell',
+            },
+            description: 'Dán link ảnh hoặc chọn từ Thư viện Media để làm ảnh bìa.',
           },
         },
         {

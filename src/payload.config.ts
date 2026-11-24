@@ -16,14 +16,33 @@ export default buildConfig({
     },
   },
   collections: [
+    // 1. NGƯỜI DÙNG & TÀI KHOẢN
     {
       slug: 'users',
+      labels: {
+        singular: 'Quản trị viên & Khách',
+        plural: 'Tài khoản người dùng',
+      },
       auth: true,
       access: {
         read: () => true,
       },
-      fields: [],
+      fields: [
+        {
+          name: 'role',
+          type: 'select',
+          label: 'Phân quyền',
+          options: [
+            { label: 'Super Admin', value: 'admin' },
+            { label: 'Biên tập viên (Editor)', value: 'editor' },
+            { label: 'Khách hàng', value: 'customer' },
+          ],
+          defaultValue: 'admin',
+        },
+      ],
     },
+
+    // 2. CẨM NANG NUÔI MÈO
     {
       slug: 'posts',
       labels: {
@@ -99,6 +118,8 @@ export default buildConfig({
         },
       ],
     },
+
+    // 3. SẢN PHẨM HẠT & PATE
     {
       slug: 'products',
       labels: {
@@ -107,6 +128,7 @@ export default buildConfig({
       },
       admin: {
         useAsTitle: 'name',
+        defaultColumns: ['name', 'category', 'price', 'inStock'],
       },
       access: {
         read: () => true,
@@ -129,16 +151,17 @@ export default buildConfig({
           type: 'select',
           label: 'Danh mục',
           options: [
-            { label: 'Thức ăn hạt', value: 'thuc-an-hat' },
-            { label: 'Pate cho mèo', value: 'pate-cho-meo' },
-            { label: 'Cát vệ sinh', value: 'cat-ve-sinh' },
+            { label: 'Thức ăn hạt dinh dưỡng', value: 'thuc-an-hat' },
+            { label: 'Pate & Súp thưởng', value: 'pate-cho-meo' },
+            { label: 'Cát vệ sinh khử mùi', value: 'cat-ve-sinh' },
+            { label: 'Phụ kiện & Đồ chơi', value: 'phu-kien' },
           ],
           required: true,
         },
         {
           name: 'image',
           type: 'text',
-          label: 'URL Ảnh',
+          label: 'URL Ảnh sản phẩm',
         },
         {
           name: 'weight',
@@ -148,7 +171,218 @@ export default buildConfig({
         {
           name: 'inStock',
           type: 'checkbox',
-          label: 'Còn hàng',
+          label: 'Còn hàng trong kho',
+          defaultValue: true,
+        },
+      ],
+    },
+
+    // 4. BANNER & SLIDER KHUYẾN MÃI
+    {
+      slug: 'banners',
+      labels: {
+        singular: 'Banner & Slider',
+        plural: 'Banner khuyến mãi & Quảng cáo',
+      },
+      admin: {
+        useAsTitle: 'title',
+        defaultColumns: ['title', 'position', 'isActive', 'linkUrl'],
+      },
+      access: {
+        read: () => true,
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          label: 'Tên chiến dịch / Tiêu đề Banner',
+          required: true,
+        },
+        {
+          name: 'imageUrl',
+          type: 'text',
+          label: 'URL Hình ảnh Banner',
+          required: true,
+        },
+        {
+          name: 'linkUrl',
+          type: 'text',
+          label: 'Đường dẫn liên kết khi click',
+          defaultValue: '/san-pham',
+        },
+        {
+          name: 'position',
+          type: 'select',
+          label: 'Vị trí hiển thị',
+          options: [
+            { label: 'Slider đầu trang chủ', value: 'home_slider' },
+            { label: 'Banner giữa trang', value: 'home_middle' },
+            { label: 'Popup khuyến mãi', value: 'popup' },
+          ],
+          defaultValue: 'home_slider',
+        },
+        {
+          name: 'isActive',
+          type: 'checkbox',
+          label: 'Đang hiển thị',
+          defaultValue: true,
+        },
+      ],
+    },
+
+    // 5. MÃ GIẢM GIÁ & VOUCHER
+    {
+      slug: 'coupons',
+      labels: {
+        singular: 'Mã giảm giá',
+        plural: 'Mã giảm giá & Voucher',
+      },
+      admin: {
+        useAsTitle: 'code',
+        defaultColumns: ['code', 'discountPercent', 'minOrderValue', 'isActive'],
+      },
+      access: {
+        read: () => true,
+      },
+      fields: [
+        {
+          name: 'code',
+          type: 'text',
+          label: 'Mã khuyến mãi (VD: MEOCUNG10, FREESHIP)',
+          required: true,
+          unique: true,
+        },
+        {
+          name: 'discountPercent',
+          type: 'number',
+          label: 'Tỷ lệ giảm giá (%)',
+          required: true,
+        },
+        {
+          name: 'minOrderValue',
+          type: 'number',
+          label: 'Giá trị đơn tối thiểu (VNĐ)',
+          defaultValue: 0,
+        },
+        {
+          name: 'expiryDate',
+          type: 'date',
+          label: 'Hạn sử dụng',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+            },
+          },
+        },
+        {
+          name: 'isActive',
+          type: 'checkbox',
+          label: 'Kích hoạt mã',
+          defaultValue: true,
+        },
+      ],
+    },
+
+    // 6. ĐƠN HÀNG (ORDERS)
+    {
+      slug: 'orders',
+      labels: {
+        singular: 'Đơn hàng',
+        plural: 'Quản lý đơn hàng',
+      },
+      admin: {
+        useAsTitle: 'customerName',
+        defaultColumns: ['customerName', 'customerPhone', 'totalAmount', 'orderStatus', 'createdAt'],
+      },
+      access: {
+        read: () => true,
+      },
+      fields: [
+        {
+          name: 'customerName',
+          type: 'text',
+          label: 'Họ tên khách hàng',
+          required: true,
+        },
+        {
+          name: 'customerPhone',
+          type: 'text',
+          label: 'Số điện thoại',
+          required: true,
+        },
+        {
+          name: 'shippingAddress',
+          type: 'textarea',
+          label: 'Địa chỉ giao hàng',
+          required: true,
+        },
+        {
+          name: 'totalAmount',
+          type: 'number',
+          label: 'Tổng tiền (VNĐ)',
+          required: true,
+        },
+        {
+          name: 'orderStatus',
+          type: 'select',
+          label: 'Trạng thái đơn',
+          options: [
+            { label: 'Chờ xác nhận', value: 'pending' },
+            { label: 'Đang đóng gói', value: 'processing' },
+            { label: 'Đang vận chuyển', value: 'shipping' },
+            { label: 'Đã hoàn thành', value: 'delivered' },
+            { label: 'Đã hủy', value: 'cancelled' },
+          ],
+          defaultValue: 'pending',
+        },
+        {
+          name: 'notes',
+          type: 'textarea',
+          label: 'Ghi chú đơn hàng',
+        },
+      ],
+    },
+
+    // 7. ĐÁNH GIÁ & PHẢN HỒI (REVIEWS)
+    {
+      slug: 'reviews',
+      labels: {
+        singular: 'Đánh giá sản phẩm',
+        plural: 'Đánh giá & Phản hồi',
+      },
+      admin: {
+        useAsTitle: 'reviewerName',
+        defaultColumns: ['reviewerName', 'rating', 'comment', 'isApproved'],
+      },
+      access: {
+        read: () => true,
+      },
+      fields: [
+        {
+          name: 'reviewerName',
+          type: 'text',
+          label: 'Tên khách đánh giá',
+          required: true,
+        },
+        {
+          name: 'rating',
+          type: 'number',
+          label: 'Số sao (1 - 5)',
+          min: 1,
+          max: 5,
+          defaultValue: 5,
+          required: true,
+        },
+        {
+          name: 'comment',
+          type: 'textarea',
+          label: 'Nội dung nhận xét',
+          required: true,
+        },
+        {
+          name: 'isApproved',
+          type: 'checkbox',
+          label: 'Duyệt hiển thị ra web',
           defaultValue: true,
         },
       ],

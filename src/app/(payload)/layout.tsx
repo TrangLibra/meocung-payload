@@ -8,7 +8,7 @@ export const metadata = {
   description: 'Bảng quản trị cẩm nang và sản phẩm Mèo Cưng',
 }
 
-const serverFunction = async (args) => {
+async function serverFunction(args: any) {
   'use server'
   return handleServerFunctions({
     ...args,
@@ -16,10 +16,10 @@ const serverFunction = async (args) => {
   })
 }
 
-const Layout = ({ children }) => (
-  <RootLayout config={config} serverFunction={serverFunction}>
-    {children}
-  </RootLayout>
-)
-
-export default Layout
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <RootLayout config={config} serverFunction={serverFunction}>
+      {children}
+    </RootLayout>
+  )
+}

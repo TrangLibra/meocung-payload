@@ -7,6 +7,17 @@ import { fileURLToPath } from 'url'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+function formatSlug(val: string): string {
+  return val
+    .toString()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 export default buildConfig({
   admin: {
     user: 'users',
@@ -66,9 +77,20 @@ export default buildConfig({
         {
           name: 'slug',
           type: 'text',
-          label: 'Đường dẫn (Slug URL)',
-          required: true,
-          unique: true,
+          label: 'Đường dẫn (Slug URL - Tự sinh từ tiêu đề)',
+          admin: {
+            position: 'sidebar',
+          },
+          hooks: {
+            beforeValidate: [
+              ({ value, data }) => {
+                if (!value && data?.title) {
+                  return formatSlug(data.title);
+                }
+                return value ? formatSlug(value) : value;
+              },
+            ],
+          },
         },
         {
           name: 'category',

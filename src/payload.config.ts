@@ -112,19 +112,7 @@ export default buildConfig({
           label: 'Ảnh bìa',
           defaultValue: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&auto=format&fit=crop&q=80',
           admin: {
-            components: {
-              Cell: '@/components/ImageCell',
-            },
             description: 'Dán link ảnh hoặc chọn từ Thư viện Media để làm ảnh bìa.',
-          },
-        },
-        {
-          name: 'mediaFile',
-          type: 'upload',
-          relationTo: 'media',
-          label: 'Hoặc tải ảnh trực tiếp từ máy tính (Upload File)',
-          admin: {
-            description: 'Chọn file ảnh JPG/PNG từ máy tính của bạn để tải lên.',
           },
         },
         {
@@ -425,20 +413,16 @@ export default buildConfig({
       ],
     },
 
-    // 8. KHO MEDIA / TỆP TIN & HÌNH ẢNH (Media Upload)
+    // 8. KHO MEDIA / TỆP TIN & HÌNH ẢNH (Media)
     {
       slug: 'media',
       labels: {
         singular: 'Tệp tin hình ảnh',
         plural: 'Thư viện hình ảnh (Media)',
       },
-      upload: {
-        staticDir: path.resolve(dirname, '../public/media'),
-        mimeTypes: ['image/*'],
-      },
       admin: {
         useAsTitle: 'alt',
-        defaultColumns: ['filename', 'alt', 'createdAt'],
+        defaultColumns: ['alt', 'url', 'createdAt'],
       },
       access: {
         read: () => true,
@@ -448,6 +432,12 @@ export default buildConfig({
           name: 'alt',
           type: 'text',
           label: 'Mô tả hình ảnh (Alt text)',
+          required: true,
+        },
+        {
+          name: 'url',
+          type: 'text',
+          label: 'Đường dẫn URL ảnh',
           required: true,
         },
       ],

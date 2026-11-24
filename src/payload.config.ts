@@ -62,7 +62,7 @@ export default buildConfig({
       },
       admin: {
         useAsTitle: 'title',
-        defaultColumns: ['title', 'category', 'publishedAt', 'status'],
+        defaultColumns: ['coverImage', 'title', 'category', 'publishedAt', 'status'],
       },
       access: {
         read: () => true,
@@ -107,6 +107,24 @@ export default buildConfig({
           required: true,
         },
         {
+          name: 'coverImage',
+          type: 'text',
+          label: 'URL Ảnh bìa (Dán link ảnh hoặc chọn từ Thư viện Media)',
+          defaultValue: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&auto=format&fit=crop&q=80',
+          admin: {
+            description: 'Ảnh xem trước sẽ hiển thị trực tiếp ở danh sách bài viết và ngoài trang chủ.',
+          },
+        },
+        {
+          name: 'mediaFile',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Hoặc tải ảnh trực tiếp từ máy tính (Upload File)',
+          admin: {
+            description: 'Chọn file ảnh JPG/PNG từ máy tính của bạn để tải lên.',
+          },
+        },
+        {
           name: 'publishedAt',
           type: 'date',
           label: 'Ngày xuất bản (Datetime)',
@@ -121,12 +139,6 @@ export default buildConfig({
           name: 'summary',
           type: 'textarea',
           label: 'Tóm tắt bài viết',
-        },
-        {
-          name: 'coverImage',
-          type: 'text',
-          label: 'URL Ảnh bìa',
-          defaultValue: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&auto=format&fit=crop&q=80',
         },
         {
           name: 'status',
@@ -410,16 +422,20 @@ export default buildConfig({
       ],
     },
 
-    // 8. KHO MEDIA / TỆP TIN & HÌNH ẢNH (Media)
+    // 8. KHO MEDIA / TỆP TIN & HÌNH ẢNH (Media Upload)
     {
       slug: 'media',
       labels: {
         singular: 'Tệp tin hình ảnh',
         plural: 'Thư viện hình ảnh (Media)',
       },
+      upload: {
+        staticDir: path.resolve(dirname, '../public/media'),
+        mimeTypes: ['image/*'],
+      },
       admin: {
         useAsTitle: 'alt',
-        defaultColumns: ['alt', 'url', 'createdAt'],
+        defaultColumns: ['filename', 'alt', 'createdAt'],
       },
       access: {
         read: () => true,
@@ -429,12 +445,6 @@ export default buildConfig({
           name: 'alt',
           type: 'text',
           label: 'Mô tả hình ảnh (Alt text)',
-          required: true,
-        },
-        {
-          name: 'url',
-          type: 'text',
-          label: 'Đường dẫn URL ảnh',
           required: true,
         },
       ],

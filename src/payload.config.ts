@@ -16,12 +16,12 @@ export default buildConfig({
     },
   },
   collections: [
-    // 1. NGƯỜI DÙNG & TÀI KHOẢN
+    // 1. NGƯỜI DÙNG & TÀI KHOẢN (Auth Collection)
     {
       slug: 'users',
       labels: {
-        singular: 'Quản trị viên & Khách',
-        plural: 'Tài khoản người dùng',
+        singular: 'Tài khoản quản trị',
+        plural: 'Quản lý Tài khoản (Users)',
       },
       auth: true,
       access: {
@@ -42,12 +42,12 @@ export default buildConfig({
       ],
     },
 
-    // 2. CẨM NANG NUÔI MÈO
+    // 2. CẨM NANG NUÔI MÈO (Posts)
     {
       slug: 'posts',
       labels: {
-        singular: 'Cẩm nang nuôi mèo',
-        plural: 'Cẩm nang nuôi mèo',
+        singular: 'Bài viết cẩm nang',
+        plural: 'Cẩm nang nuôi mèo (100+ bài)',
       },
       admin: {
         useAsTitle: 'title',
@@ -109,7 +109,7 @@ export default buildConfig({
         {
           name: 'status',
           type: 'select',
-          label: 'Trạng thái',
+          label: 'Trạng thái xuất bản',
           options: [
             { label: 'Bản nháp (Draft)', value: 'draft' },
             { label: 'Đã xuất bản (Published)', value: 'published' },
@@ -119,7 +119,7 @@ export default buildConfig({
       ],
     },
 
-    // 3. SẢN PHẨM HẠT & PATE
+    // 3. SẢN PHẨM HẠT & PATE (Products)
     {
       slug: 'products',
       labels: {
@@ -149,7 +149,7 @@ export default buildConfig({
         {
           name: 'category',
           type: 'select',
-          label: 'Danh mục',
+          label: 'Danh mục sản phẩm',
           options: [
             { label: 'Thức ăn hạt dinh dưỡng', value: 'thuc-an-hat' },
             { label: 'Pate & Súp thưởng', value: 'pate-cho-meo' },
@@ -177,12 +177,12 @@ export default buildConfig({
       ],
     },
 
-    // 4. BANNER & SLIDER KHUYẾN MÃI
+    // 4. BANNER & SLIDER KHUYẾN MÃI (Banners)
     {
       slug: 'banners',
       labels: {
-        singular: 'Banner & Slider',
-        plural: 'Banner khuyến mãi & Quảng cáo',
+        singular: 'Banner quảng cáo',
+        plural: 'Banner khuyến mãi & Slider',
       },
       admin: {
         useAsTitle: 'title',
@@ -230,7 +230,7 @@ export default buildConfig({
       ],
     },
 
-    // 5. MÃ GIẢM GIÁ & VOUCHER
+    // 5. MÃ GIẢM GIÁ & VOUCHER (Coupons)
     {
       slug: 'coupons',
       labels: {
@@ -283,12 +283,12 @@ export default buildConfig({
       ],
     },
 
-    // 6. ĐƠN HÀNG (ORDERS)
+    // 6. ĐƠN HÀNG (Orders)
     {
       slug: 'orders',
       labels: {
         singular: 'Đơn hàng',
-        plural: 'Quản lý đơn hàng',
+        plural: 'Quản lý đơn hàng (Orders)',
       },
       admin: {
         useAsTitle: 'customerName',
@@ -343,12 +343,12 @@ export default buildConfig({
       ],
     },
 
-    // 7. ĐÁNH GIÁ & PHẢN HỒI (REVIEWS)
+    // 7. ĐÁNH GIÁ & PHẢN HỒI (Reviews)
     {
       slug: 'reviews',
       labels: {
         singular: 'Đánh giá sản phẩm',
-        plural: 'Đánh giá & Phản hồi',
+        plural: 'Đánh giá & Phản hồi (Reviews)',
       },
       admin: {
         useAsTitle: 'reviewerName',
@@ -387,7 +387,75 @@ export default buildConfig({
         },
       ],
     },
+
+    // 8. KHO MEDIA / TỆP TIN & HÌNH ẢNH (Media)
+    {
+      slug: 'media',
+      labels: {
+        singular: 'Tệp tin hình ảnh',
+        plural: 'Thư viện hình ảnh (Media)',
+      },
+      admin: {
+        useAsTitle: 'alt',
+        defaultColumns: ['alt', 'url', 'createdAt'],
+      },
+      access: {
+        read: () => true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'text',
+          label: 'Mô tả hình ảnh (Alt text)',
+          required: true,
+        },
+        {
+          name: 'url',
+          type: 'text',
+          label: 'Đường dẫn URL ảnh',
+          required: true,
+        },
+      ],
+    },
   ],
+
+  // GLOBALS: Phân hệ Cấu hình toàn trang (Đặc trưng của Payload CMS)
+  globals: [
+    {
+      slug: 'site-settings',
+      label: 'Cấu hình chung website (Header/Footer)',
+      access: {
+        read: () => true,
+      },
+      fields: [
+        {
+          name: 'siteName',
+          type: 'text',
+          label: 'Tên cửa hàng',
+          defaultValue: 'Mèo Cưng Pet Shop - Thức Ăn & Cẩm Nang Nuôi Mèo',
+        },
+        {
+          name: 'hotline',
+          type: 'text',
+          label: 'Số điện thoại Hotline',
+          defaultValue: '0382 542 737',
+        },
+        {
+          name: 'address',
+          type: 'textarea',
+          label: 'Địa chỉ cửa hàng',
+          defaultValue: '123 Đường Cầu Giấy, Quận Cầu Giấy, TP. Hà Nội',
+        },
+        {
+          name: 'facebookUrl',
+          type: 'text',
+          label: 'Link Fanpage Facebook',
+          defaultValue: 'https://facebook.com/meocung',
+        },
+      ],
+    },
+  ],
+
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || 'meocung_payload_secret_key_2026_super_secure',
   typescript: {

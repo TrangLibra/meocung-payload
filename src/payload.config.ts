@@ -166,6 +166,16 @@ export default buildConfig({
           required: true,
         },
         {
+          name: 'medusa_id',
+          type: 'text',
+          label: 'Mã liên kết Medusa (Medusa Product ID / SKU)',
+        },
+        {
+          name: 'rich_content',
+          type: 'richText',
+          label: 'Nội dung chi tiết sản phẩm (Dinh dưỡng & Hướng dẫn sử dụng)',
+        },
+        {
           name: 'price',
           type: 'number',
           label: 'Giá bán (VNĐ)',
